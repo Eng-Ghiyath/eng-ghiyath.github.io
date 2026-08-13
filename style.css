@@ -26,7 +26,7 @@
 
 /* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;max-width:100%}
 body{
   background:var(--bg);
   color:var(--text);
@@ -167,6 +167,10 @@ body:has(button:hover) .cursor-ring{
 @media(max-width:768px){
   .lang-toggle{margin-inline-end:8px}
 }
+@media(max-width:960px){
+  .nav-links{gap:0}
+  .nav-link{padding:6px 10px;font-size:.82rem}
+}
 
 /* ── LAYOUT ── */
 .container{width:100%;max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
@@ -263,6 +267,32 @@ body:has(button:hover) .cursor-ring{
   mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
 }
 .hero-content{display:flex;flex-direction:column;gap:20px}
+
+/* ── PROFILE PHOTO ── */
+.hero-photo{
+  position:relative;
+  width:clamp(88px,11vw,132px);height:clamp(88px,11vw,132px);
+  margin-bottom:4px;flex-shrink:0;
+}
+.hero-photo-ring{
+  position:absolute;inset:-9px;border-radius:50%;
+  border:1px dashed var(--border);
+  animation:rotateCW 24s linear infinite;
+}
+.hero-photo-frame{
+  position:relative;z-index:1;width:100%;height:100%;
+  border-radius:50%;overflow:hidden;
+  background:var(--bg3);
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--glow2);
+}
+.hero-photo-img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-photo-placeholder{width:42%;height:42%;fill:var(--muted);opacity:.55}
+@media(max-width:1024px){
+  .hero-photo{align-self:center}
+}
+
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
   background:rgba(10,255,228,.08);border:1px solid rgba(10,255,228,.2);
@@ -817,12 +847,27 @@ body:has(button:hover) .cursor-ring{
   .footer-bottom{flex-direction:column;gap:8px;text-align:center}
 }
 
+@media(max-width:640px){
+  .hero{padding-top:96px}
+  .hero-photo{width:96px;height:96px}
+  .section{padding-block:56px}
+  .section-title{margin-bottom:36px}
+  .about-traits{padding:16px}
+  .cv-content{padding:36px 20px}
+  .timeline-item{grid-template-columns:56px 1fr;gap:12px}
+  .tl-marker span{font-size:.75rem;padding:3px 6px}
+}
+
 @media(max-width:480px){
   .hero-actions{flex-direction:column;width:100%}
   .hero-actions .btn{justify-content:center}
   .hero-stats{width:100%}
-  .hstat{flex:1}
+  .hstat{flex:1;padding:12px 8px}
+  .hstat-num{font-size:1.25rem}
   .stats-grid{grid-template-columns:1fr 1fr}
+  .btn{padding:12px 20px;font-size:.85rem}
+  .cinfo-item{padding:14px 16px}
+  .footer-bottom{font-size:.72rem}
 }
 
 /* ─── Reduced motion ─── */
