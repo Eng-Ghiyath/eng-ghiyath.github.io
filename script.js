@@ -297,7 +297,7 @@ function applyTranslations(lang) {
 
   /* 1. html tag */
   document.documentElement.lang = lang;
-  document.documentElement.dir  = lang === 'en' ? 'rtl' : 'ltr';
+  document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
 
   /* 2. <title> */
   document.title = t.pageTitle;
