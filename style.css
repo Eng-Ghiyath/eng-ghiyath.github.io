@@ -249,10 +249,10 @@ body:has(button:hover) .cursor-ring{
    HERO
 ═══════════════════════════════ */
 .hero{
-  position:relative;min-height:100svh;display:grid;
-  grid-template-columns:1fr 1fr;gap:32px;
-  align-items:center;padding:80px clamp(16px,4vw,48px) 60px;
-  max-width:1200px;margin:0 auto;
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:150px clamp(16px,4vw,48px) 90px;
+  max-width:1280px;margin:0 auto;
 }
 #heroCanvas{
   position:fixed;inset:0;width:100%;height:100%;z-index:-1;
@@ -266,31 +266,67 @@ body:has(button:hover) .cursor-ring{
   background-size:60px 60px;
   mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
 }
-.hero-content{display:flex;flex-direction:column;gap:20px}
+.hero-content{
+  display:flex;flex-direction:row;align-items:center;justify-content:space-between;
+  gap:clamp(32px,6vw,80px);width:100%;
+}
+.hero-text{
+  display:flex;flex-direction:column;align-items:flex-start;text-align:start;
+  gap:20px;flex:1 1 480px;min-width:0;
+}
 
 /* ── PROFILE PHOTO ── */
 .hero-photo{
+  --ring1:14px;--ring2:28px;--ring3:44px;--glow-ext:58px;
   position:relative;
-  width:clamp(88px,11vw,132px);height:clamp(88px,11vw,132px);
-  margin-bottom:4px;flex-shrink:0;
+  width:clamp(220px,24vw,340px);
+  aspect-ratio:1;
+  flex-shrink:0;
 }
-.hero-photo-ring{
-  position:absolute;inset:-9px;border-radius:50%;
-  border:1px dashed var(--border);
-  animation:rotateCW 24s linear infinite;
+.hero-photo-glow{
+  position:absolute;z-index:0;pointer-events:none;
+  inset:calc(var(--glow-ext) * -1);
+  border-radius:50%;
+  background:radial-gradient(closest-side,rgba(10,255,228,.28),rgba(10,255,228,.07) 60%,transparent 78%);
+  filter:blur(4px);
+  animation:heroPhotoPulse 4s ease-in-out infinite;
 }
+@keyframes heroPhotoPulse{
+  0%,100%{opacity:.7;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.035)}
+}
+.hero-photo-ring{position:absolute;z-index:0;border-radius:50%;pointer-events:none}
+.hero-photo-ring.outer{inset:calc(var(--ring3) * -1);border:1px solid rgba(10,255,228,.22)}
+.hero-photo-ring.dashed{
+  inset:calc(var(--ring2) * -1);
+  border:1.5px dashed rgba(10,255,228,.6);
+  animation:rotateCW 30s linear infinite;
+}
+.hero-photo-ring.inner{inset:calc(var(--ring1) * -1);border:1px solid rgba(10,255,228,.32)}
 .hero-photo-frame{
   position:relative;z-index:1;width:100%;height:100%;
   border-radius:50%;overflow:hidden;
   background:var(--bg3);
-  border:2px solid var(--accent);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:var(--glow2);
+  -webkit-mask-image:radial-gradient(circle,#000 82%,transparent 100%);
+  mask-image:radial-gradient(circle,#000 82%,transparent 100%);
 }
-.hero-photo-img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-photo-placeholder{width:42%;height:42%;fill:var(--muted);opacity:.55}
-@media(max-width:1024px){
-  .hero-photo{align-self:center}
+.hero-photo-img{
+  width:100%;height:100%;object-fit:cover;object-position:center 18%;
+  display:block;filter:saturate(1.05) contrast(1.04);
+}
+.hero-photo-placeholder{width:38%;height:38%;fill:var(--muted);opacity:.55}
+@media(max-width:900px){
+  .hero{min-height:auto;padding-top:110px;padding-bottom:24px}
+  .hero-content{flex-direction:column-reverse;text-align:center;gap:28px}
+  .hero-text{align-items:center;text-align:center}
+  .hero-stats{justify-content:center}
+  .hero-desc{max-width:100%}
+  .hero-photo{
+    width:clamp(220px,42vw,270px);
+    --ring1:12px;--ring2:24px;--ring3:38px;--glow-ext:50px;
+  }
+  .section{padding-block:40px}
 }
 
 .hero-badge{
@@ -329,43 +365,7 @@ body:has(button:hover) .cursor-ring{
 .hstat span:last-child{font-size:.72rem;color:var(--muted);font-family:monospace}
 .hstat-div{width:1px;background:var(--border);height:40px;align-self:center}
 
-/* ── CAD FRAME ── */
-.hero-visual{display:flex;align-items:center;justify-content:center}
-.cad-frame{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius-lg);
-  overflow:hidden;
-  box-shadow:0 0 60px rgba(10,255,228,0.08),0 30px 80px rgba(0,0,0,.5);
-  width:100%;max-width:460px;
-  backdrop-filter:blur(20px);
-}
-.cad-header{
-  display:flex;align-items:center;gap:6px;
-  padding:10px 16px;
-  background:rgba(0,0,0,.3);border-bottom:1px solid var(--border);
-}
-.cad-dot{width:11px;height:11px;border-radius:50%}
-.cad-dot.r{background:#ff5f57}
-.cad-dot.y{background:#febc2e}
-.cad-dot.g{background:#28c840}
-.cad-title{margin-inline-start:8px;font-size:.72rem;font-family:monospace;color:var(--muted)}
-.cad-body{padding:24px;display:flex;flex-direction:column;gap:16px}
-.gear-svg{width:100%;height:auto}
-#gear1{animation:rotateCW 8s linear infinite;transform-origin:80px 100px}
-#gear2{animation:rotateCCW 4s linear infinite;transform-origin:140px 65px}
 @keyframes rotateCW{to{transform:rotate(360deg)}}
-@keyframes rotateCCW{to{transform:rotate(-360deg)}}
-.cad-info{
-  display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;
-}
-.cad-prop{
-  flex:1;padding:8px 12px;display:flex;flex-direction:column;gap:2px;
-  border-inline-end:1px solid var(--border);
-}
-.cad-prop:last-child{border-inline-end:none}
-.cad-prop span:first-child{font-size:.65rem;color:var(--muted);font-family:monospace;text-transform:uppercase}
-.cad-prop span:last-child{font-size:.8rem;color:var(--accent);font-weight:600;font-family:monospace}
 
 /* ── SCROLL HINT ── */
 .scroll-hint{
@@ -810,11 +810,7 @@ body:has(button:hover) .cursor-ring{
    RESPONSIVE
 ═══════════════════════════════ */
 @media(max-width:1024px){
-  .hero{grid-template-columns:1fr;max-width:680px;text-align:center;justify-items:center}
-  .hero-visual{display:none}
   .scroll-hint{display:none}
-  .hero-stats{justify-content:center}
-  .hero-desc{max-width:100%}
   .projects-grid{grid-template-columns:repeat(2,1fr)}
   .about-grid{grid-template-columns:1fr;max-width:640px;margin:0 auto}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
@@ -849,8 +845,11 @@ body:has(button:hover) .cursor-ring{
 
 @media(max-width:640px){
   .hero{padding-top:96px}
-  .hero-photo{width:96px;height:96px}
-  .section{padding-block:56px}
+  .hero-photo{
+    width:min(58vw,210px);
+    --ring1:8px;--ring2:16px;--ring3:26px;--glow-ext:34px;
+  }
+  .section{padding-block:40px}
   .section-title{margin-bottom:36px}
   .about-traits{padding:16px}
   .cv-content{padding:36px 20px}
